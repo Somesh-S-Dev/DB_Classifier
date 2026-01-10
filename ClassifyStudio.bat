@@ -1,12 +1,27 @@
 @echo off
 echo Starting ClassifyStudio...
+:: 1. Verify Node module dependencies are installed
+echo Checking and installing Node module dependencies...
+if exist "backend\node_modules" (
+    echo Backend dependencies found, skipping installation...
+) else (
+    echo Installing backend dependencies...
+    cd backend
+    call npm install
+    cd ..
+)
 
-:: Start Backend
-::start "Backend Server" cmd /c "cd /d %~dp0backend && npm run dev"
+if exist "frontend\node_modules" (
+    echo Frontend dependencies found, skipping installation...
+) else (
+    echo Installing frontend dependencies...
+    cd frontend
+    call npm install
+    cd ..
+)
 
-:: Start Frontend
-::start "Frontend Client" cmd /c "cd /d %~dp0frontend && npm run dev"
-
+:: 2. Open two Windows Terminal tabs: one for backend and one for frontend
+echo Launching backend and frontend in Windows Terminal...
 wt -d "%~dp0backend" cmd /k "npm run dev" ; nt -d "%~dp0frontend" cmd /k "npm run dev"
 
 echo Both processes are starting in same windows.
